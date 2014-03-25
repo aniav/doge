@@ -1,0 +1,87 @@
+<!-- 
+
+1. two-way data binding
+2. directives (ng-init, ng-repeat)
+3. controllers
+4. 
+ -->
+
+<!doctype html>
+
+<html lang="en" ng-app="doge">
+<head>
+  <meta charset="utf-8">
+
+  <title>WoW! Such HTML!</title>
+  <script src="angular.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript">
+  	var app = angular.module('doge', []);
+
+  	app.controller('SuchController', function($scope, $window) {
+  		$scope.doge_text;
+  		$scope.example_doge = ['Such conference!', 'Very doge!', 'Many people!', 'Very love!'];
+
+  		$scope.canvas = document.getElementById("doge-holder")
+		$scope.context = $scope.canvas.getContext("2d");
+		$scope.context.font = "20px Comic Sans, cursive";
+		$scope.background = new Image();
+		$scope.background.src = "doge.jpg";
+		$scope.background.onload = function() {
+			$scope.drawDoge($scope.example_doge);
+		}
+
+		$scope.drawDoge = function(value) {
+			$scope.context.clearRect(0, 0, 500, 500);
+			$scope.context.drawImage($scope.background, 0, 0); 
+
+			angular.forEach(value, function(text) {
+				$scope.context.fillText(
+					text,
+					Math.floor((Math.random()*400)+1), 
+					Math.floor((Math.random()*490)+1)
+				);
+			})
+		}
+
+		$scope.getDoge = function() {
+			var canvas = document.getElementById("doge-holder")
+			var img = canvas.toDataURL("image/jpg");
+			$window.open(img);
+		}
+
+		$scope.$watch('doge_text', function(value) {
+			value = value ? value.split(',') : $scope.example_doge;
+			$scope.drawDoge(value);
+
+			
+		})
+  	});
+
+  </script>
+</head>
+
+<body>
+	<h1>Very code!</h1>
+	<div ng-controller="SuchController">
+		<canvas id="doge-holder" width="500" height="500">
+		</canvas>
+		<input type="text" ng-model="doge_text">
+		<p>Your text
+			<ul>
+				<li ng-repeat="text in doge_text.split(',')">
+					{{ text }}
+				</li>
+			</ul>
+		</p>
+		<p>Example text
+			<ul>
+				<li ng-repeat="text in example_doge">
+					{{ text }}
+				</li>
+			</ul>
+		</p>
+		<button ng-click="getDoge()">Download!</button>
+	</div>
+</body>
+</html>
