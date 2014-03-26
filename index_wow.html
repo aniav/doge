@@ -45,9 +45,7 @@
 		}
 
 		$scope.getDoge = function() {
-			var canvas = document.getElementById("doge-holder")
-			var img = canvas.toDataURL("image/jpg");
-			$window.open(img);
+			$window.open($scope.canvas.toDataURL("image/jpg"));
 		}
 
 		$scope.$watch('doge_text', function(value) {
