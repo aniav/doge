@@ -1,0 +1,15 @@
+      $scope.canvas = document.getElementById("doge-holder")
+      $scope.context = $scope.canvas.getContext("2d");
+
+
+      $scope.drawDoge = function(value) {
+        $scope.context.clearRect(0, 0, 500, 500);
+        $scope.context.drawImage($scope.background, 0, 0); 
+
+        angular.forEach(value, function(text) {
+          $scope.context.fillText(
+            text,
+            Math.floor((Math.random()*350)+5), 
+            Math.floor((Math.random()*450)+25)
+          );
+        })

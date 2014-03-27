@@ -1,0 +1,75 @@
+<!-- 
+
+1. two-way data binding
+2. directives (ng-repeat, ng-model)
+3. controllers
+4. filters
+ -->
+
+<!doctype html>
+
+<html lang="en" ng-app="dogeApp">
+<head>
+  <meta charset="utf-8">
+  <title>WoW! Such HTML!</title>
+  <script src="angular.min.js"></script>
+  <script>
+    var app = angular.module("dogeApp", []);
+
+    app.controller("dogeController", function($scope, $filter) {
+      $scope.exampleDoge = ["Such conference!", "Very people", "Many wow!"];
+
+      $scope.drawDoge = function(value) {
+        context.clearRect(0, 0, 500, 500);
+        context.drawImage(background, 0, 0); 
+
+        angular.forEach(value, function(text) {
+          context.fillText(
+            text,
+            Math.floor((Math.random()*350)+5), 
+            Math.floor((Math.random()*450)+25)
+          );
+        });
+      }
+
+     $scope.$watch('dogeText', function(value) {
+        if (!value) return;
+
+        $scope.drawDoge($filter('filter')(value.split(','), 'wow'));
+     });
+
+    });
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div ng-controller="dogeController">
+    <h1>Very doge!</h1>
+    <canvas id="doge" width="500" height="500"></canvas>
+    <input type="text" ng-model="dogeText">
+
+    <ul>
+      <li ng-repeat="text in dogeText.split(',') | filter: 'wow'">
+        {{ text }}
+        </li>
+    </ul>
+
+    <ul>
+      <li ng-repeat="text in exampleDoge">
+        {{ text }}
+        </li>
+    </ul>
+
+  </div>
+  <script>
+      var canvas = document.getElementById("doge")
+      var context = canvas.getContext("2d");
+      context.font = "bold 25px Comic Sans, cursive";
+      var background = new Image();
+      background.src = "doge.jpg";
+      background.onload = function() {
+        context.drawImage(background, 0, 0); 
+      }
+  </script>
+</body>
+</html>
